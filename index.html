@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Little Universe</title>
+    <meta
+      name="description"
+      content="A private cinematic interactive universe created from Reno to Reine Panda."
+    />
+    <meta property="og:title" content="Our Little Universe" />
+    <meta
+      property="og:description"
+      content="A private cinematic interactive universe created from Reno to Reine Panda."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#020611" />
+
+    <!-- Editorial serif, clean sans, and Bengali typography with graceful offline fallbacks -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif+Bengali:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="scene-gate-mode">
+    <!-- Persistent Audio Element (Never autoplays; loops continuously across chapters) -->
+    <audio id="bg-music" loop preload="metadata">
+      <source src="audio/website-music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Persistent Cosmic Backdrop across the entire continuous film -->
+    <div id="universe-backdrop" class="universe-backdrop" aria-hidden="true">
+      <div class="black-curtain" id="black-curtain"></div>
+
+      <div class="cosmos-camera" id="cosmos-camera">
+        <div class="nebula nebula--midnight"></div>
+        <div class="nebula nebula--royal"></div>
+        <div class="nebula nebula--gold"></div>
+
+        <div class="stars-layer stars-layer--far" id="stars-far"></div>
+        <div class="stars-layer stars-layer--mid" id="stars-mid"></div>
+        <div class="stars-layer stars-layer--near" id="stars-near"></div>
+
+        <div class="cosmic-core-light" id="cosmic-core-light"></div>
+      </div>
+
+      <canvas id="cosmos-canvas" class="cosmos-canvas"></canvas>
+      <div class="film-vignette"></div>
+    </div>
+
+    <!-- Top Utility & Navigation Bar (Clean 3-zone structure) -->
+    <header class="top-hud" id="top-hud">
+      <div class="top-hud__brand">
+        <span class="top-hud__title" id="hud-brand-text">Our Little Universe</span>
+      </div>
+
+      <nav class="top-hud__nav" id="chapter-nav" aria-label="Story Chapters" hidden>
+        <button type="button" class="nav-link" data-chapter="1">I. Stars</button>
+        <button type="button" class="nav-link" data-chapter="2">II. Promises</button>
+        <button type="button" class="nav-link" data-chapter="3">III. Letter</button>
+        <button type="button" class="nav-link" data-chapter="4">IV. Dreams</button>
+        <button type="button" class="nav-link" data-chapter="5">V. Forever</button>
+      </nav>
+
+      <div class="top-hud__actions">
+        <button
+          type="button"
+          class="hud-action-btn"
+          id="hud-replay-btn"
+          aria-label="Replay introduction from the beginning"
+          hidden
+        >
+          Replay Intro
+        </button>
+
+        <button
+          type="button"
+          class="music-btn"
+          id="music-toggle"
+          aria-pressed="false"
+          aria-label="Play background music"
+        >
+          <span class="music-btn__bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="music-btn__label" id="music-label">Play Music</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Continuous Cinematic Stage -->
+    <main id="cinema-stage" class="cinema-stage">
+      <!-- =========================================================
+           SCENE 0 — THE SECRET PREMIERE
+           ========================================================= -->
+      <section
+        id="scene-0"
+        class="scene scene--active"
+        aria-labelledby="premiere-kicker"
+      >
+        <div class="scene-inner scene-inner--narrow">
+          <!-- Opening Screening Card -->
+          <div id="gate-stage" class="gate-stage">
+            <div class="premiere-header" id="premiere-header">
+              <p class="eyebrow-title" id="premiere-kicker">A PRIVATE SCREENING</p>
+              <p class="premiere-subtitle">
+                <em>RESERVED FOR ONE VERY SPECIAL PERSON.</em>
+              </p>
+            </div>
+
+            <p class="premiere-prologue" id="premiere-prologue">
+              &ldquo;Before entering this little universe, there&apos;s one tiny test. Let&apos;s see how well you remember our little story&hellip;&rdquo;
+            </p>
+
+            <form id="gate-form" class="gate-form" novalidate>
+              <!-- Question 01 -->
+              <div class="gate-step is-active" id="question-1-step">
+                <p class="step-index">QUESTION 01</p>
+                <label class="gate-question" for="answer-1">
+                  What do I lovingly call you?
+                </label>
+                <div class="input-row">
+                  <input
+                    id="answer-1"
+                    name="answer1"
+                    type="text"
+                    class="cosmic-input"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    aria-describedby="gate-feedback"
+                  />
+                </div>
+                <div class="gate-controls">
+                  <button type="button" class="btn-primary" id="q1-next-btn">
+                    Continue
+                  </button>
+                </div>
+              </div>
+
+              <!-- Question 02 -->
+              <div class="gate-step" id="question-2-step" hidden>
+                <p class="step-index">QUESTION 02</p>
+                <label class="gate-question" for="answer-2">
+                  What&apos;s my favourite date of the year?
+                </label>
+                <div class="input-row">
+                  <input
+                    id="answer-2"
+                    name="answer2"
+                    type="text"
+                    class="cosmic-input"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    aria-describedby="gate-feedback"
+                  />
+                </div>
+                <div class="gate-controls">
+                  <button type="button" class="btn-ghost" id="q2-back-btn">
+                    Back
+                  </button>
+                  <button type="submit" class="btn-primary" id="q2-submit-btn">
+                    Enter Universe
+                  </button>
+                </div>
+              </div>
+
+              <p
+                id="gate-feedback"
+                class="gate-feedback"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </form>
+
+            <div class="gate-footer-actions">
+              <button type="button" class="btn-text-subtle" id="gate-replay-btn">
+                Replay Introduction
+              </button>
+            </div>
+          </div>
+
+          <!-- Countdown & Title Premiere Sequence -->
+          <div id="premiere-sequence" class="premiere-sequence" hidden aria-live="polite">
+            <div class="countdown-display" id="countdown-display" aria-hidden="true"></div>
+            <div class="premiere-title-lockup" id="premiere-title-lockup" hidden>
+              <h1 class="hero-universe-title">OUR LITTLE UNIVERSE</h1>
+              <p class="hero-universe-line">
+                <em>&ldquo;A little world, made of two hearts, countless dreams and a thousand little memories.&rdquo;</em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           CHAPTER 1 — BEYOND THE STARS, THERE IS US
+           ========================================================= -->
+      <section
+        id="chapter-1"
+        class="scene"
+        aria-labelledby="chapter-1-title"
+        hidden
+      >
+        <div class="scene-inner scene-inner--centered">
+          <div class="chapter-one-aura" aria-hidden="true">
+            <div class="aurora-ring aurora-ring--outer"></div>
+            <div class="aurora-ring aurora-ring--inner"></div>
+          </div>
+
+          <p class="chapter-kicker">Chapter I</p>
+          <h2 id="chapter-1-title" class="chapter-title light-sweep-text">
+            BEYOND THE STARS, THERE IS US
+          </h2>
+          <p class="chapter-lead chapter-one-whisper" id="chapter-1-whisper">
+            Somewhere past the noise of the world, a quiet sky belongs only to two hearts.
+          </p>
+
+          <div class="chapter-actions" id="chapter-1-actions">
+            <button type="button" class="btn-primary" id="to-chapter-2-btn">
+              Continue &#9825;
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           CHAPTER 2 — TWELVE LITTLE PROMISES
+           ========================================================= -->
+      <section
+        id="chapter-2"
+        class="scene"
+        aria-labelledby="chapter-2-title"
+        hidden
+      >
+        <div class="scene-inner scene-inner--medium">
+          <header class="chapter-header">
+            <p class="chapter-kicker">Chapter II</p>
+            <h2 id="chapter-2-title" class="chapter-title">TWELVE LITTLE PROMISES</h2>
+            <p class="chapter-subtitle">
+              <em>&ldquo;Not promises of perfection, but little reminders of how much you matter.&rdquo;</em>
+            </p>
+          </header>
+
+          <!-- Promise Deck View -->
+          <div id="promises-deck" class="promises-deck">
+            <div class="promise-progress-bar" aria-label="Promises progress">
+              <span class="promise-progress-text tabular-nums" id="promise-progress-text">
+                Promise 01 of 12
+              </span>
+              <div class="promise-segments" id="promise-segments" aria-hidden="true"></div>
+            </div>
+
+            <article
+              class="promise-card"
+              id="promise-card"
+              aria-live="polite"
+            >
+              <p class="promise-card__number tabular-nums" id="promise-number">Promise 01</p>
+              <blockquote class="promise-card__quote" id="promise-quote"></blockquote>
+            </article>
+
+            <div class="promise-nav">
+              <button type="button" class="btn-ghost" id="promise-prev-btn" disabled>
+                Previous
+              </button>
+              <button type="button" class="btn-primary" id="promise-next-btn">
+                Next Promise
+              </button>
+            </div>
+          </div>
+
+          <!-- Post-12th Promise Transition -->
+          <div id="promises-outro" class="promises-outro" hidden>
+            <p class="reflection-line">
+              <em>&ldquo;Some promises are spoken. Some are simply carried in the heart.&rdquo;</em>
+            </p>
+            <div class="chapter-actions">
+              <button type="button" class="btn-primary" id="to-chapter-3-btn">
+                Open Your Letter &#9825;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           CHAPTER 3 — A LETTER FROM YOUR FOX
+           ========================================================= -->
+      <section
+        id="chapter-3"
+        class="scene"
+        aria-labelledby="chapter-3-title"
+        hidden
+      >
+        <div class="scene-inner scene-inner--reading">
+          <header class="chapter-header">
+            <p class="chapter-kicker">Chapter III</p>
+            <h2 id="chapter-3-title" class="chapter-title">A LETTER FROM YOUR FOX</h2>
+            <p class="chapter-subtitle">
+              <em>&ldquo;Some feelings are too precious to leave unwritten.&rdquo;</em>
+            </p>
+          </header>
+
+          <!-- Floating Midnight-Blue Envelope -->
+          <div id="envelope-stage" class="envelope-stage">
+            <div class="envelope-caption">
+              <p class="envelope-recipient">For My Dearest Panda</p>
+              <p class="envelope-sub"><em>A few words from my heart.</em></p>
+            </div>
+
+            <button
+              type="button"
+              id="envelope-trigger"
+              class="envelope-wrapper"
+              aria-label="Click to open your letter from Reno"
+            >
+              <span class="envelope-shadow" aria-hidden="true"></span>
+              <span class="envelope-box" id="envelope-box" aria-hidden="true">
+                <span class="envelope-back"></span>
+                <span class="envelope-letter-peek">
+                  <span class="peek-line"></span>
+                  <span class="peek-line peek-line--short"></span>
+                </span>
+                <span class="envelope-pocket"></span>
+                <span class="envelope-flap"></span>
+                <span class="wax-seal" id="wax-seal">
+                  <span class="wax-seal__ring"></span>
+                  <span class="wax-seal__glyph">&#9825;</span>
+                </span>
+              </span>
+              <span class="envelope-cta-text">Click to open your letter &#9825;</span>
+            </button>
+          </div>
+
+          <!-- Unfolded Handwritten Letter -->
+          <div id="letter-stage" class="letter-stage" hidden>
+            <article class="letter-sheet" id="letter-sheet" tabindex="0" aria-label="A letter from Reno to Panda">
+              <div class="letter-sheet__border" aria-hidden="true"></div>
+              <div class="letter-body">
+                <p class="letter-salutation"><strong>My Dearest Panda,</strong></p>
+
+                <p lang="bn">জানো, কোথা থেকে শুরু করব বুঝতে পারছি না।</p>
+
+                <p>
+                  <span lang="bn">আমি সবসময় একটা জিনিস বিশ্বাস করে এসেছি — যখন কেউ কাউকে মন থেকে ভালোবাসে, তখন সে নিজের মতো করে তার জন্য সবকিছু করতে চায়। আমার জীবনেও এমন হয়েছে। কিন্তু একটা সময় গিয়ে,</span> mumma <span lang="bn">ছাড়া, বাকি সবকিছু থেকেই কোনো না কোনো কারণে দূরে সরে গেছি।</span>
+                </p>
+
+                <p>
+                  <span lang="bn">তাই হয়তো আজও ঠিক করে জানি না যে তোমাকে কতটা ভালোবাসি।</span> But I know one thing — <span lang="bn">আমার যতটা ভালোবাসা, যতটা</span> care <span lang="bn">আর যতটা</span> effort <span lang="bn">দেওয়ার ক্ষমতা আছে, সবটা দিয়েই তোমাকে ভালোবেসে যেতে চাই।</span> Not just today, not just when everything is perfect, but throughout this journey.
+                </p>
+
+                <p>
+                  <span lang="bn">আমি তোমার</span> trust <span lang="bn">কখনো ইচ্ছে করে</span> break <span lang="bn">করব না।</span> I know trust is something that takes time to build, and I never want to take yours for granted.
+                </p>
+
+                <p>
+                  <span lang="bn">আর একটা কথা... আমি</span> personally believe <span lang="bn">করি যে</span> expectations <span lang="bn">কম রাখলে</span> relationships-<span lang="bn">এ</span> unnecessary pressure-<span lang="bn">ও কম থাকে। কারণ আমি জানি, তোমার প্রত্যেকটা</span> expectation, <span lang="bn">প্রত্যেকটা ছোট-বড়</span> wish <span lang="bn">সবসময়</span> fulfil <span lang="bn">করা আমার পক্ষে</span> possible <span lang="bn">নাও হতে পারে। আর আমি চাই না যে কোনো একটা</span> unmet expectation <span lang="bn">আমাদের মধ্যে</span> unnecessary misunderstanding <span lang="bn">বা</span> trust issues create <span lang="bn">করুক।</span>
+                </p>
+
+                <p>
+                  <span lang="bn">তাই তোমার কাছে আমার কোনো</span> unreasonable expectation <span lang="bn">নেই।</span> I just want us to trust each other, communicate honestly and keep choosing to understand each other.
+                </p>
+
+                <p>
+                  But that doesn&apos;t mean <span lang="bn">তোমার আমার থেকে কিছু চাওয়ার অধিকার নেই।</span> If there&apos;s something you want from me, something that matters to you, I&apos;ll always try my best to fulfil it. I might not get everything right, but I promise I&apos;ll keep trying.
+                </p>
+
+                <p>
+                  <span lang="bn">আমি চাই আমরা দুজনে নিজেদের</span> dreams fulfil <span lang="bn">করি, অনেক</span> successful <span lang="bn">হই, নিজেদের</span> identity build <span lang="bn">করি, আর তার সঙ্গে একটা খুব সুন্দর,</span> healthy, happy relationship-<span lang="bn">ও</span> grow <span lang="bn">করি।</span>
+                </p>
+
+                <p>
+                  One day, <span lang="bn">যখন আমরা পিছনে ফিরে এই সময়টার দিকে তাকাব,</span> I hope we&apos;ll have countless memories to smile about.
+                </p>
+
+                <p>
+                  I don&apos;t promise a perfect story, Panda. I promise my honest efforts, my trust, my care and a heart that genuinely wants to keep loving you.
+                </p>
+
+                <div class="letter-signature">
+                  <p><strong>Always your Fox,</strong></p>
+                  <p><strong>Reno &#9825;</strong></p>
+                </div>
+              </div>
+            </article>
+
+            <div class="letter-outro" id="letter-outro">
+              <p class="reflection-line">
+                <em>&ldquo;Some feelings are too precious to leave unwritten.&rdquo;</em>
+              </p>
+              <p class="reflection-line reflection-line--secondary">
+                <em>&ldquo;And some dreams are too beautiful not to share.&rdquo;</em>
+              </p>
+              <div class="chapter-actions">
+                <button type="button" class="btn-primary" id="to-chapter-4-btn">
+                  LET&apos;S DREAM TOGETHER &#9825;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           CHAPTER 4 — TWO DREAMS. ONE SKY.
+           ========================================================= -->
+      <section
+        id="chapter-4"
+        class="scene"
+        aria-labelledby="chapter-4-title"
+        hidden
+      >
+        <div class="scene-inner scene-inner--wide">
+          <header class="chapter-header">
+            <p class="chapter-kicker">Chapter IV</p>
+            <h2 id="chapter-4-title" class="chapter-title">TWO DREAMS. ONE SKY.</h2>
+          </header>
+
+          <div class="dreams-layout">
+            <!-- Cosmic Orbital Visual (Pure HTML/CSS) -->
+            <div class="orbital-stage" aria-hidden="true">
+              <div class="orbital-system" id="orbital-system">
+                <div class="orbital-glow"></div>
+                <div class="orbit-track orbit-track--outer">
+                  <div class="celestial-body celestial-body--silver"></div>
+                </div>
+                <div class="orbit-track orbit-track--inner">
+                  <div class="celestial-body celestial-body--gold"></div>
+                </div>
+                <div class="planet-ring"></div>
+                <div class="central-planet">
+                  <div class="planet-atmosphere"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gradual Sentence Reveal -->
+            <div class="dreams-narrative">
+              <div class="dreams-lines" id="dreams-lines" aria-live="polite">
+                <p class="dream-sentence" data-dream-index="0">
+                  &ldquo;Two people, each with their own dreams.&rdquo;
+                </p>
+                <p class="dream-sentence" data-dream-index="1">
+                  &ldquo;Two different journeys, growing side by side.&rdquo;
+                </p>
+                <p class="dream-sentence" data-dream-index="2">
+                  &ldquo;I want us to fulfil our dreams, become successful, build our own identities and create a beautiful life without ever losing the little things that make us us.&rdquo;
+                </p>
+                <p class="dream-sentence" data-dream-index="3">
+                  &ldquo;May we always have reasons to celebrate each other&apos;s victories.&rdquo;
+                </p>
+                <p class="dream-sentence" data-dream-index="4">
+                  &ldquo;May we keep growing, individually and together.&rdquo;
+                </p>
+                <p class="dream-sentence" data-dream-index="5">
+                  &ldquo;The universe is vast. But I hope we keep finding our way back to each other.&rdquo;
+                </p>
+              </div>
+
+              <div class="chapter-actions dreams-actions" id="dreams-actions" hidden>
+                <button type="button" class="btn-primary" id="to-chapter-5-btn">
+                  ONE LAST LITTLE PROMISE &#9825;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           CHAPTER 5 — OUR LITTLE FOREVER
+           ========================================================= -->
+      <section
+        id="chapter-5"
+        class="scene"
+        aria-labelledby="chapter-5-title"
+        hidden
+      >
+        <div class="golden-horizon" id="golden-horizon" aria-hidden="true"></div>
+
+        <div class="scene-inner scene-inner--centered forever-inner" id="forever-inner">
+          <!-- Phase 5A & 5B: Ring Ceremony -->
+          <div id="ring-ceremony" class="ring-ceremony">
+            <header class="chapter-header forever-opening" id="forever-opening">
+              <p class="chapter-kicker">Chapter V</p>
+              <h2 id="chapter-5-title" class="chapter-title forever-heading">
+                AND NOW... ONE LAST PROMISE.
+              </h2>
+              <p class="forever-opening-line">
+                &ldquo;Not a promise of a perfect future.&rdquo;
+              </p>
+              <p class="forever-opening-line">
+                &ldquo;A promise to keep making an honest effort.&rdquo;
+              </p>
+            </header>
+
+            <!-- Illuminated Platform & Symbolic Golden Ring -->
+            <div class="pedestal-stage" id="pedestal-stage">
+              <div class="pedestal-platform" aria-hidden="true">
+                <div class="platform-disc platform-disc--outer"></div>
+                <div class="platform-disc platform-disc--inner"></div>
+                <div class="platform-beam"></div>
+              </div>
+
+              <button
+                type="button"
+                id="ring-trigger"
+                class="ring-trigger"
+                aria-label="Touch the golden ring to reveal the final promise"
+              >
+                <span class="ring-aura" aria-hidden="true"></span>
+                <span class="golden-ring" aria-hidden="true">
+                  <span class="ring-crown">
+                    <span class="ring-stone"></span>
+                  </span>
+                  <span class="ring-band">
+                    <span class="ring-band__sheen"></span>
+                  </span>
+                  <span class="ring-inner-rim"></span>
+                </span>
+                <span class="ring-prompt" id="ring-prompt">Touch the ring &#9825;</span>
+              </button>
+            </div>
+
+            <!-- Approached Ring Promise Lines -->
+            <div id="ring-proposal" class="ring-proposal" hidden aria-live="polite">
+              <p class="proposal-line" data-proposal-index="0">
+                &ldquo;I don&apos;t know everything the future holds for us.&rdquo;
+              </p>
+              <p class="proposal-line" data-proposal-index="1">
+                &ldquo;But I know that I want to keep learning, understanding, respecting and choosing you through the journey.&rdquo;
+              </p>
+              <p class="proposal-line proposal-line--question" data-proposal-index="2">
+                &ldquo;Will you keep choosing this little forever with me?&rdquo;
+              </p>
+
+              <div class="chapter-actions proposal-actions" id="proposal-actions" hidden>
+                <button type="button" class="btn-gold" id="yes-forever-btn">
+                  A THOUSAND TIMES, YES &#9825;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 5C: Final Scene -->
+          <div id="final-scene" class="final-scene" hidden aria-live="polite">
+            <p class="final-kicker">THEN HERE&apos;S TO US.</p>
+            <h2 class="final-title">OUR LITTLE UNIVERSE</h2>
+            <p class="final-date tabular-nums"><code>2026(24/11/2026)</code></p>
+            <p class="final-names"><strong>Angel &#9825; Reno</strong></p>
+
+            <div class="final-verses">
+              <p>&ldquo;Not the end of a story. Just another beautiful page beginning.&rdquo;</p>
+              <p>&ldquo;Here&apos;s to growing, laughing, dreaming and creating countless little memories together.&rdquo;</p>
+            </div>
+
+            <div class="final-signature">
+              <p><strong>Always your Fox,</strong></p>
+              <p><strong>Reno &#9825;</strong></p>
+            </div>
+
+            <div class="final-quiet-actions">
+              <button type="button" class="btn-text-subtle" id="final-replay-btn">
+                Replay from the Beginning
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
